@@ -1,0 +1,50 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: viewer
+  namespace: cesar  # Cambia esto por tu namespace
+rules:
+# Pods y logs
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "pods/status"]
+  verbs: ["get", "list", "watch"]
+
+# Servicios
+- apiGroups: [""]
+  resources: ["services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+
+# ConfigMaps y Secrets (solo lectura)
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list"]
+
+# PersistentVolumeClaims
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["get", "list", "watch"]
+
+# Deployments y ReplicaSets
+- apiGroups: ["apps"]
+  resources: ["deployments", "deployments/status", "replicasets", "replicasets/status", "statefulsets", "daemonsets"]
+  verbs: ["get", "list", "watch"]
+
+# Jobs y CronJobs
+- apiGroups: ["batch"]
+  resources: ["jobs", "jobs/status", "cronjobs"]
+  verbs: ["get", "list", "watch"]
+
+# Ingress
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch"]
+
+# Events
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["get", "list", "watch"]
+
+# Describir recursos (necesario para algunas operaciones)
+- apiGroups: [""]
+  resources: ["resourcequotas", "limitranges"]
+  verbs: ["get", "list"]

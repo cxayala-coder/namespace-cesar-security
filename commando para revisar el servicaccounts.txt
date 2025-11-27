@@ -1,0 +1,2 @@
+microk8s kubectl apply -f service_acounts.yaml
+microk8s kubectl get serviceaccounts -n cesar
