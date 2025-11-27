@@ -116,17 +116,3 @@ rules:
   - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses", "networkpolicies"]
     verbs: ["get", "list", "watch"]
----
-# ClusterRoleBinding para la ServiceAccount
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: namespace-viewer-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: namespace-viewer
-subjects:
-  - kind: ServiceAccount
-    name: dashboard-viewer-access
-    namespace: cesar
