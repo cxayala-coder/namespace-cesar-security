@@ -11,4 +11,3 @@ subjects:
   - kind: ServiceAccount
     name: dashboard-viewer-access
     namespace: cesar
-    
