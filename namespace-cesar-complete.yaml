@@ -1,0 +1,100 @@
+---
+# Primero: Crear el namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cesar
+---
+# Segundo: ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dashboard-viewer-access
+  namespace: cesar
+---
+# Tercero: Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: viewer
+  namespace: cesar
+rules:
+  # Pods
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/status"]
+    verbs: ["get", "list", "watch"]
+
+  # Deployments
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/status"]
+    verbs: ["get", "list", "watch"]
+
+  # StatefulSets
+  - apiGroups: ["apps"]
+    resources: ["statefulsets", "statefulsets/status"]
+    verbs: ["get", "list", "watch"]
+
+  # DaemonSets
+  - apiGroups: ["apps"]
+    resources: ["daemonsets", "daemonsets/status"]
+    verbs: ["get", "list", "watch"]
+
+  # ReplicaSets
+  - apiGroups: ["apps"]
+    resources: ["replicasets", "replicasets/status"]
+    verbs: ["get", "list", "watch"]
+
+  # Services
+  - apiGroups: [""]
+    resources: ["services", "services/status"]
+    verbs: ["get", "list", "watch"]
+
+  # ConfigMaps
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch"]
+
+  # Secrets (solo lectura)
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list"]
+
+  # PersistentVolumeClaims
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims", "persistentvolumeclaims/status"]
+    verbs: ["get", "list", "watch"]
+
+  # Ingresses
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses", "ingresses/status"]
+    verbs: ["get", "list", "watch"]
+
+  # NetworkPolicies
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["networkpolicies"]
+    verbs: ["get", "list", "watch"]
+
+  # Events
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+
+  # Jobs y CronJobs
+  - apiGroups: ["batch"]
+    resources: ["jobs", "jobs/status", "cronjobs"]
+    verbs: ["get", "list", "watch"]
+---
+# Cuarto: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dashboard-viewer-access-binding
+  namespace: cesar
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: viewer
+subjects:
+  - kind: ServiceAccount
+    name: dashboard-viewer-access
+    namespace: cesar
